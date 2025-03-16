@@ -38,7 +38,7 @@ jobs:
             os=${platform%/*}
             arch=${platform#*/}
             echo "Building for $os/$arch..."
-            GOOS=$os GOARCH=$arch go build -o "${{ github.event.repository.name }}-$os-$arch" ./cmd/main.go
+            GOOS=$os GOARCH=$arch go build -o "${{ github.event.repository.name }}-$os-$arch" ./main.go
             if [ "$os" = "windows" ]; then
               mv "${{ github.event.repository.name }}-$os-$arch" "${{ github.event.repository.name }}-$os-$arch.exe"
               zip "${{ github.event.repository.name }}-$os-$arch.zip" "${{ github.event.repository.name }}-$os-$arch.exe"
