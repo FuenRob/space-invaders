@@ -121,7 +121,8 @@ Puedes personalizar varios aspectos del juego modificando las constantes en `gam
 
 Las contribuciones son bienvenidas. Por favor, abre un issue para discutir los cambios que te gustaría hacer.
 
-## Agradecimientos
+## Dependencias
 
-- Inspirado en el juego clásico Space Invaders
-- Desarrollado con [Cobra](https://github.com/spf13/cobra) y [BubbleTea](https://github.com/charmbracelet/bubbletea)
+- [Cobra](https://github.com/spf13/cobra) - CLI Framework
+- [Charm Bubbletea](https://github.com/charmbracelet/bubbletea) - Terminal UI framework
+- [Lipgloss](https://github.com/charmbracelet/lipgloss) - UI styling
