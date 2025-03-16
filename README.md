@@ -82,13 +82,14 @@ Para iniciar el juego con la dificultad por defecto (Normal):
 ```
 space-invaders/
 ├── cmd/
-│   └── root.go   (Configuración de Cobra CLI)
-├── game/
-│   ├── game.go   (Lógica principal del juego)
-│   ├── player.go (Jugador y sus acciones)
-│   ├── enemy.go  (Enemigos y sus acciones)
-│   ├── bullet.go (Proyectiles)
-│   └── ui.go     (Interfaz con BubbleTea)
+│   └── cmd.go   (Configuración de Cobra CLI)
+├── internal/
+│   └── game/
+│         ├── game.go   (Lógica principal del juego)
+│         ├── player.go (Jugador y sus acciones)
+│         ├── enemy.go  (Enemigos y sus acciones)
+│         ├── bullet.go (Proyectiles)
+│         └── ui.go     (Interfaz con BubbleTea)
 ├── main.go       (Punto de entrada)
 └── go.mod        (Dependencias)
 ```
