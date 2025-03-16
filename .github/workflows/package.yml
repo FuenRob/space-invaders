@@ -1,0 +1,59 @@
+name: Go Package
+
+on:
+  push:
+    tags:
+      - 'v*' # Se activará cuando se cree un tag que comience con 'v'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.24' # Ajusta según la versión de Go que necesites
+
+      - name: Build
+        run: go build -v ./...
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      # Compilar para múltiples plataformas
+      - name: Build for multiple platforms
+        run: |
+          platforms=("linux/amd64" "windows/amd64" "darwin/amd64")
+          for platform in "${platforms[@]}"; do
+            os=${platform%/*}
+            arch=${platform#*/}
+            echo "Building for $os/$arch..."
+            GOOS=$os GOARCH=$arch go build -o "${{ github.event.repository.name }}-$os-$arch" ./cmd/main.go
+            if [ "$os" = "windows" ]; then
+              mv "${{ github.event.repository.name }}-$os-$arch" "${{ github.event.repository.name }}-$os-$arch.exe"
+              zip "${{ github.event.repository.name }}-$os-$arch.zip" "${{ github.event.repository.name }}-$os-$arch.exe"
+            else
+              tar -czf "${{ github.event.repository.name }}-$os-$arch.tar.gz" "${{ github.event.repository.name }}-$os-$arch"
+            fi
+          done
+
+      # Subir los archivos compilados a la release
+      - name: Upload Release Assets
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            ${{ github.event.repository.name }}-linux-amd64.tar.gz
+            ${{ github.event.repository.name }}-windows-amd64.zip
+            ${{ github.event.repository.name }}-darwin-amd64.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
